@@ -63,6 +63,9 @@
                     <a href="#run">Deployment</a>
                 </li>
                 <li>
+                    <a href="#offline">Offline Access</a>
+                </li>
+                <li>
                     <a href="#shoot">Troubleshooting</a>
                 </li>
                 <li><h3>Start Coding</h3></li>
@@ -113,14 +116,14 @@
                         <h1 class="title">Thank you for Purchasing </h1>
                         <br /><br />
                         <h3>Boss Ultimate - React Admin Template Material Design</h3>
-                        <h4>Version 2.0.1</h4>
+                        <h4>Version 2.0.2</h4>
                         <hr />
                         <ul>
                             <li>
                                 Created : 16 Jul 2018
                             </li>
                             <li>
-                                Latest Update : 17 Jul 2022
+                                Latest Update : 19 Jan 2022
                             </li>
                         </ul>
                     </div>
@@ -396,6 +399,93 @@
                                 <li>Just right click > Delete All
                                   <br />
                                   <img src="images/firefox_clear_localstorage.png" width="600" alt="img" />
+                                </li>
+                              </ol>
+                            </li>
+						</ul>
+                    </div>
+                </section>
+                <!-- END -->
+                
+                <!-- OFFLINE ACCESS -->
+                <section class="row" id="offline">
+                    <div class="col-lg-10">
+                        <h1>Offline Access</h1>
+                        <hr>
+                        <h4>Enable offline access</h4>
+                        <p>This is a feature from React Boilerplate which has focus of 'offline first'.
+                              So will make easier to build Progressive Web Aplication. The next frontier in performant web apps: availability without a network connection from the instant your users load the app.</p>
+						            <ul>
+                            <li>
+                              Open <code>app/app.js</code>
+                              At very bottom just enable(uncomment) this code
+                              <pre class=" language-js"><code class=" language-js"><span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token string">'serviceWorker'</span> <span class="token keyword">in</span> navigator<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  window<span class="token punctuation">.</span><span class="token function">addEventListener</span><span class="token punctuation">(</span><span class="token string">'load'</span><span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=&gt;</span> <span class="token punctuation">{</span>
+    navigator<span class="token punctuation">.</span>serviceWorker<span class="token punctuation">.</span><span class="token function">register</span><span class="token punctuation">(</span><span class="token string">'/service-worker.js'</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">then</span><span class="token punctuation">(</span>registration <span class="token operator">=&gt;</span> <span class="token punctuation">{</span>
+      console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token string">'SW registered: '</span><span class="token punctuation">,</span> registration<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token keyword">catch</span><span class="token punctuation">(</span>registrationError <span class="token operator">=&gt;</span> <span class="token punctuation">{</span>
+      console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token string">'SW registration failed: '</span><span class="token punctuation">,</span> registrationError<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span class="token punctuation">}</span></code></pre>
+                            </li>
+                            <li>Next, open <code>/internals/webpack/webpack.prod.babel.js</code>
+                              Then enable(uncomment) the webpack plugin import
+                              <pre class=" language-js"><code class=" language-js"><span class="token keyword">const</span> WorkboxPlugin <span class="token operator">=</span> <span class="token function">require</span><span class="token punctuation">(</span><span class="token string">'workbox-webpack-plugin'</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+                              and enable(uncomment) WorkboxPlugin webpack config around line:87
+                              <pre class=" language-js"><code class=" language-js"><span class="token keyword">new</span> <span class="token class-name">WorkboxPlugin<span class="token punctuation">.</span>GenerateSW</span><span class="token punctuation">(</span><span class="token punctuation">{</span>
+  <span class="token comment">// these options encourage the ServiceWorkers to get in there fast</span>
+  <span class="token comment">// and not allow any straggling "old" SWs to hang around</span>
+  clientsClaim<span class="token punctuation">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span>
+  navigateFallback<span class="token punctuation">:</span> <span class="token string">'/index.html'</span><span class="token punctuation">,</span>
+  skipWaiting<span class="token punctuation">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span>
+  maximumFileSizeToCacheInBytes<span class="token punctuation">:</span> <span class="token number">5242880</span>
+<span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">,</span></code></pre>
+                            </li>
+                            <li>Go to console, then do the same as deployment method <a href="#run">above</a>. Build the site <pre class=" language-js"><code class=" language-js">npm run build</code></pre></li>
+                            <li>After finish run the site in production mode <pre class=" language-js"><code class=" language-js">npm run start<span class="token punctuation">:</span>prod</code></pre></li>
+                            <li>Then navigate to <a href="http://localhost:8080" target="_blank">http://localhost:8080</a></li>
+                            <li>
+                              <div class="alert alert-warning">
+                                  WARNING: Do not cache build/.htaccess and build/service-worker.js in your server, required for offline-first updates.
+                              </div>
+                            </li>
+                            <li>
+                              <strong>Note 1:</strong>
+                              With this feature all scripts will be stored in Local Storage, so can be accessed even offline.
+                              And if any updates, The service-worker.js will handle it when browser reload or re-open the site.
+                              <strong>Once update received, the site won't changes immediately, because the status is pending/waiting,
+                              Please run the second reload to set the update as active.</strong>
+                              <br>
+                              <img src="images/sw.png" width="400" alt="sw">
+                            </li>
+                            <li><strong>Note 2:</strong> 
+                              After build finish then when you access it on local, all of the assets will be stored in local storage.
+                              So when You make a change the result will not update, because browser will take the code from cache.
+                              <br>
+                              But you can clear it by clear in local storage by following this step.
+                              <br><br>
+                              <strong>Google Chrome and Opera</strong>
+                              <ol>
+                                <li>Open "Developer Tools" or Right click &gt; Inspect element</li>
+                                <li>Then go to tab "Application"</li>
+                                <li>Choose "Clear Storage" in left sidebar</li>
+                                <li>Scroll down then You will see button "Clear site data"</li>
+                                <li>Just click it to clear all stored assets
+                                  <br>
+                                  <img src="images/chrome_clear_localstorage.png" width="600" alt="img">
+                                </li>
+                              </ol>
+                              <br><br>
+                              <strong>Safari and Firefox</strong>
+                              <ol>
+                                <li>Open "Developer Tools" or Right click &gt; Inspect element</li>
+                                <li>Then go to tab "Storage"</li>
+                                <li>Choose "Local Storage" in left sidebar</li>
+                                <li>Just right click &gt; Delete All
+                                  <br>
+                                  <img src="images/firefox_clear_localstorage.png" width="600" alt="img">
                                 </li>
                               </ol>
                             </li>
@@ -1116,6 +1206,22 @@ import BatteryStd from '@material-ui/icons/BatteryStd';
                     <div class="col-lg-10">
                         <h1>Change Log</h1>
                         <hr>
+                        <table class="table table-striped log">
+                            <thead>
+                              <tr>
+                                <th>
+                                    <strong>Version 2.0.2 – 19 Jan, 2022</strong>
+                                </th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                  <td>
+                                      - Update script for node v18 <br />
+                                  </td>
+                                </tr>
+                            </tbody>
+                        </table>
                         <table class="table table-striped log">
                             <thead>
                               <tr>
